@@ -14,5 +14,5 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["test_tools.py"]
+testpaths = ["test_tools.py", "test_agent.py"]
 norecursedirs = ["data", ".venv"]

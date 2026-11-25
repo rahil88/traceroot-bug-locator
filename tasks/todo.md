@@ -21,7 +21,9 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - Built by `prepare_data.py`: every answer file exists in its tree, no `.git`, no issue names its answer file, no tree mentions its issue number
 - [x] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
   - `tools.py`, 23 tests in `test_tools.py`. Grep shows at most 3 lines per file and puts tests and docs last
-- [ ] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
+- [x] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
+  - `agent.py`, 8 tests. First run on 1218: 3B looped for 12 calls and never answered (15 s). 4B found the right file in 8 calls (82 s). 1218 is one of the two easier issues
+  - Do not tune the prompt on these 15 issues, or say so in the README
 - [ ] 7. Tracing: `Integration.OPENAI`, `@observe` on loop and tools, tags for issue, model and outcome (45 min)
   - Checkpoint: one full trace in the UI, tree matches what the agent did
 
