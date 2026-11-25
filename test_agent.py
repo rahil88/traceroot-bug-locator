@@ -1,3 +1,7 @@
+import os
+
+os.environ["TRACEROOT_ENABLED"] = "false"  # tests never send traces
+
 import json
 from types import SimpleNamespace as NS
 

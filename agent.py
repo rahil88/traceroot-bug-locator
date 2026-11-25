@@ -1,6 +1,9 @@
 """Bug locator: reads one issue, searches the pre-fix code, names the files to fix.
 
 uv run agent.py 1218 [model]
+
+Traced with TraceRoot when run this way. Importing it (tests, scripts) sends nothing
+until traceroot.initialize() is called.
 """
 import json
 import sys
@@ -8,6 +11,7 @@ import time
 from pathlib import Path
 
 from openai import OpenAI, OpenAIError
+from traceroot import observe, update_current_span, update_current_trace
 
 from tools import SCHEMAS, Tools
 
@@ -25,11 +29,20 @@ def ollama():
     return OpenAI(base_url="http://localhost:11434/v1", api_key="ollama", max_retries=0, timeout=300)
 
 
+@observe(name="bug-locator", type="agent", capture_input=False)
 def run(number, model=DEFAULT_MODEL, client=None, log=lambda line: None):
     issue = json.loads(Path(f"data/issues/{number}.json").read_text())
     text = f"{issue['title']}\n\n{issue['body'] or ''}"
-    return {"issue": number, "model": model,
-            **run_loop(text, Tools(f"data/trees/{number}"), model, client or ollama(), log)}
+    update_current_span(input={"issue": number, "model": model, "text": text})
+    result = {"issue": number, "model": model,
+              **run_loop(text, Tools(f"data/trees/{number}"), model, client or ollama(), log)}
+    errors = sum(c["error"] for c in result["calls"])
+    update_current_trace(
+        tags=[f"issue:{number}", f"model:{model}", f"stop:{result['stop']}"],
+        metadata={"issue": number, "model": model, "stop": result["stop"], "answer": result["answer"],
+                  "calls": len(result["calls"]), "tool_errors": errors, "seconds": result["seconds"],
+                  "max_prompt_tokens": result["max_prompt_tokens"]})
+    return result
 
 
 def run_loop(text, tools, model, client, log=lambda line: None):
@@ -65,7 +78,7 @@ def run_loop(text, tools, model, client, log=lambda line: None):
             {"id": c.id, "type": "function", "function": {"name": c.function.name, "arguments": c.function.arguments}}
             for c in batch]})
         for c in batch:
-            result = tools.call(c.function.name, c.function.arguments)
+            result = call_tool(tools, c.function.name, c.function.arguments)
             calls.append({"tool": c.function.name, "arguments": c.function.arguments, "error": result.startswith("error:")})
             log(f"{len(calls)}. {c.function.name} {c.function.arguments[:120]} -> {result.splitlines()[0][:100]}")
             if tools.final:
@@ -80,6 +93,19 @@ def run_loop(text, tools, model, client, log=lambda line: None):
 
     return {"answer": tools.final or [], "stop": stop, "error": error, "calls": calls,
             "max_prompt_tokens": max_prompt_tokens, "seconds": round(time.time() - started, 1)}
+
+
+@observe(type="tool", capture_input=False, capture_output=False)
+def call_tool(tools, name, arguments):
+    """One span per tool call, named after the tool. A tool error is text, so the span stays OK."""
+    result = tools.call(name, arguments)
+    try:
+        shown = json.loads(arguments or "{}")
+    except json.JSONDecodeError:
+        shown = arguments
+    update_current_span(name=name, input=shown, output=result,
+                        metadata={"tool_error": result.startswith("error:")})
+    return result
 
 
 def calls_left(n):
@@ -100,5 +126,14 @@ def trim(messages):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         raise SystemExit(__doc__)
-    result = run(int(sys.argv[1]), *sys.argv[2:3], log=print)
+    import traceroot
+    from dotenv import load_dotenv
+    from traceroot import Integration
+
+    load_dotenv()
+    traceroot.initialize(integrations=[Integration.OPENAI])
+    try:
+        result = run(int(sys.argv[1]), *sys.argv[2:3], log=print)
+    finally:
+        traceroot.flush()
     print(json.dumps({k: v for k, v in result.items() if k != "calls"}, indent=2), f"\n{len(result['calls'])} calls")
