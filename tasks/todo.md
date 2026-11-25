@@ -12,7 +12,8 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - Watch: one model loaded at a time (`ollama stop <model>`), 16 GB RAM was swapping. Set temperature 0 on both, the 4B defaults to 1
 - [ ] 3. TraceRoot cloud account, API key, one traced call. Write friction in `notes.md` as it happens (1 h)
   - [x] account, key, project `bug-locator`, first trace arrived (checked through the API: 2 spans, 35 in, 9 out)
-  - [ ] `notes.md` written by me, and the trace checked in the UI
+  - [x] `notes.md` started (Claude drafted from recorded facts)
+  - [ ] I check the trace in the UI and fill in the open questions in `notes.md`
 - [ ] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
 - [ ] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
 - [ ] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
