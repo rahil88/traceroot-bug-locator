@@ -14,9 +14,10 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - [x] account, key, project `bug-locator`, first trace arrived (checked through the API: 2 spans, 35 in, 9 out)
   - [x] `notes.md` started (Claude drafted from recorded facts)
   - [ ] I check the trace in the UI (done) and write the first impression line in `notes.md`
-- [ ] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
-  - Proposed 15, waiting for my OK: 3076, 3075, 3073, 2030, 1568, 1567, 1244, 1224, 1218, 1198, 1154, 857, 625, 557, 556. Spare: 1162
+- [x] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
+  - Chosen 15: 3076, 3075, 3073, 2030, 1568, 1567, 1244, 1224, 1218, 1198, 1154, 857, 625, 557, 556. Spare: 1162
   - Dropped: 706 and 75 (style or rename), 578, 552, 167, 126, 118 (text too thin, mostly screenshots)
+  - Built by `prepare_data.py`: every answer file exists in its tree, no `.git`, no issue names its answer file, no tree mentions its issue number
 - [ ] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
 - [ ] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
 - [ ] 7. Tracing: `Integration.OPENAI`, `@observe` on loop and tools, tags for issue, model and outcome (45 min)
