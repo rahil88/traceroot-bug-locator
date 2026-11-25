@@ -54,6 +54,12 @@ Predictions come from the UI source on `main` at `7f600b2`. The cloud may run a 
 - [ ] First impression: was it easy to find the trace and understand it?
   - What I saw:
 
+## 2026-11-24: AI chat panel (Cloud, UI v1.3.10)
+I opened the chat on my first trace and typed "nothing". It used one of the free chat runs.
+
+- **Visible backticks (lead E).** The trace ID shows with literal backticks around it, inside the gray code style. In the source, the chat uses Tailwind's `prose` class, which adds backticks to inline code by default, and the inline `code` style in `message-list.tsx` does not turn that off. No existing report found.
+- **Token line does not add up (lead F).** It shows "2 in, 191 out, 29,055 session, $0.1852" on the first message. "in" is labeled "Input tokens" and "session" is labeled "Cumulative session tokens". My guess: "in" leaves out cached input. 28,862 cache write tokens at $6.25 per million, plus 191 out at $25, comes to $0.1852, which matches. Not confirmed.
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.
