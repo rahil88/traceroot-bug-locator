@@ -32,6 +32,8 @@ Setup: Python SDK 0.5.1, OpenAI client pointed at Ollama, macOS.
 - Cloud: `ask` is defined on line 12, but the trace says line 18, where it is called.
 - Local test: `grep` and `read_file`, called from one dispatcher, both get the dispatcher's line.
 - Local test: an async tool run with `asyncio.create_task` gets `_run`, line 88, inside Python's asyncio code.
+- Local test with failing async tools: `asyncio.run(agent())`, `create_task` and `gather` all record `asyncio/events.py:88` `_run`. Only a plain `await` records my own file.
+- Local test: that path is absolute (`/Users/<name>/.../asyncio/events.py`), so it also sends my macOS username.
 - Why it may matter: the root cause prompt tells the agent to read the source at that file and line.
 - UI source: file and line are shown only when a span fails, so a wrong location would show up exactly when someone is debugging.
 - Not sure yet: the SDK comment says "first frame outside SDK internals", so the call site may be intended.
@@ -45,9 +47,9 @@ Predictions come from the UI source on `main` at `7f600b2`. The cloud may run a 
 - [x] Did the "Waiting for your first trace" page update by itself, and how long did it take?
   - Source: not checked for the onboarding page. The traces page asks every 3 s until a first trace exists.
   - What I saw: yes, it updated by itself. I did not time it.
-- [ ] In the UI, does `first-trace` show or link to `smoke.py:18`?
+- [x] In the UI, does `first-trace` show or link to `smoke.py:18`?
   - Source: no. File and line only appear in the error box of a failed span, as plain text with no link. `first-trace` succeeded, so it should show nothing.
-  - What I saw (UI v1.3.10): the trace row shows a repo link and a commit link (`ca8513d`), and no file or line. The UI source confirms both chips are GitHub links, shown only on the trace row. I have not clicked the agent span (second row) yet, and that is where a source location would be.
+  - What I saw (UI v1.3.10): the trace row shows a repo link and a commit link (`ca8513d`), and no file or line. The UI source confirms both chips are GitHub links, shown only on the trace row. The agent span (second row) shows kind, latency, input, output and metadata (SDK name and version), and no file, line or git info. So the source location is stored (the API returns it) but not shown for a successful span, as predicted.
 - [x] How does the UI show the missing cost?
   - Source: "-" in the trace list, and no cost chip on the model span.
   - What I saw: no cost anywhere in the trace tree or the trace header, only latency and tokens (35 in, 9 out, 44 total). The list's cost column was out of view.

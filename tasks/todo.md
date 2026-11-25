@@ -13,7 +13,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - [ ] 3. TraceRoot cloud account, API key, one traced call. Write friction in `notes.md` as it happens (1 h)
   - [x] account, key, project `bug-locator`, first trace arrived (checked through the API: 2 spans, 35 in, 9 out)
   - [x] `notes.md` started (Claude drafted from recorded facts)
-  - [ ] I check the trace in the UI and fill in the open questions in `notes.md`
+  - [ ] I check the trace in the UI (done) and write the first impression line in `notes.md`
 - [ ] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
 - [ ] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
 - [ ] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
@@ -33,7 +33,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - A: `@observe` async tool cancelled by `asyncio.wait_for` is stored OK, no output
 - B: failed OpenAI chat call is stored with no model (Anthropic keeps it)
 - C: streamed call without usage is over-counted ("Hi": 86 output tokens stored, 2 real)
-- D: `@observe` records where a function is called, not where it is defined. Tools called from one dispatcher all get the dispatcher line, and an async tool run with `asyncio.create_task` gets Python's `_run`. Their RCA prompt tells the agent to read that source. First sighting in my cloud trace: `smoke.py:18 <module>`. No existing report found 2026-11-24. The UI shows the location only on failed spans, so reproduce it with an async tool that raises
+- D: `@observe` records where a function is called, not where it is defined. Tools called from one dispatcher all get the dispatcher line, and an async tool run with `asyncio.create_task` gets Python's `_run`. Their RCA prompt tells the agent to read that source. First sighting in my cloud trace: `smoke.py:18 <module>`. No existing report found 2026-11-24. The UI shows the location only on failed spans, so reproduce it with an async tool that raises. Local test: even a plain `asyncio.run(agent())` records `asyncio/events.py:88`, with an absolute path that includes the username. Blur it in any public screenshot
 - E: chat panel shows literal backticks around inline code (seen in my UI). Likely a one-line CSS class fix in `frontend/ui/src/features/ai-assistant/components/message-list.tsx`. Small React PR, matches the role
 - F: chat footer "2 in" next to "29,055 session" hides cached input (seen in my UI, cause not confirmed)
 - Skip, already reported: `whoami` http host (#2675), missing cost shown as 0 (#2736, PR #2740)
