@@ -73,6 +73,7 @@ I opened the chat on my first trace and typed "nothing". It used one of the free
 | `tool-dispatch-b` | `repro_d.py:33` | `repro_d.py:49` | API |
 
 - `tool-gather` (added in `1918a30`): `events.py:88` in the UI error box, seen by me.
+- Filed 2026-11-24: https://github.com/traceroot-ai/traceroot-py/issues/248
 - **Claim:** async functions started by the event loop record Python's asyncio file instead of my code.
 - **Do not claim:** that recording the call site is wrong. traceroot #1027 says that is intended, so the dispatcher rows are by design.
 - Local test: skipping standard library frames fixes `asyncio.run`. For `create_task` it records the `asyncio.run` line, so it is only a partial fix.

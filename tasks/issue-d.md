@@ -1,4 +1,4 @@
-I was tracing a small async agent and opened a failed tool span to find the bug. The error box pointed to Python's own `asyncio/events.py:88`, not to my code.
+I traced a small async test agent whose tool fails on purpose, then opened the failed span. The error box points to Python's own `asyncio/events.py:88`, not to my code.
 
 traceroot 0.5.1, Python 3.12.13, macOS, TraceRoot Cloud v1.3.10
 

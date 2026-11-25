@@ -15,6 +15,8 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - [x] `notes.md` started (Claude drafted from recorded facts)
   - [ ] I check the trace in the UI (done) and write the first impression line in `notes.md`
 - [ ] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
+  - Proposed 15, waiting for my OK: 3076, 3075, 3073, 2030, 1568, 1567, 1244, 1224, 1218, 1198, 1154, 857, 625, 557, 556. Spare: 1162
+  - Dropped: 706 and 75 (style or rename), 578, 552, 167, 126, 118 (text too thin, mostly screenshots)
 - [ ] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
 - [ ] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
 - [ ] 7. Tracing: `Integration.OPENAI`, `@observe` on loop and tools, tags for issue, model and outcome (45 min)
@@ -25,7 +27,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - [ ] 9. Run 15 issues on `qwen2.5-3b-16k`, then `qwen3.5-4b-16k`. Qwen only, no cloud models (1.5 h)
 - [ ] 10. Read 10 failed traces. Label each: bad search, loop, invented path, opened then dropped, context overflow, gave up (1 h)
 - [ ] 11. Reproduce leads A, B, C in the cloud UI, plus anything in `notes.md` (1 h)
-- [ ] 12. Search duplicates again, file one issue with a minimal repro (45 min)
+- [x] 12. Search duplicates again, file one issue (traceroot-py #248) with a minimal repro (45 min)
 - [ ] 13. README with results table and limits, then the application paragraph (1 h)
 - [ ] Stretch: PR for lead B, or rerun as a TraceRoot eval
 
@@ -33,7 +35,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - A: `@observe` async tool cancelled by `asyncio.wait_for` is stored OK, no output
 - B: failed OpenAI chat call is stored with no model (Anthropic keeps it)
 - C: streamed call without usage is over-counted ("Hi": 86 output tokens stored, 2 real)
-- D: REPRODUCED in my cloud project. `@observe` async functions started by `asyncio.run`, `create_task` or `gather` record Python's `asyncio/events.py:88`, with an absolute path that includes the username (blur it in public screenshots). No duplicate found 2026-11-24. The dispatcher rows are by design (#1027), do not claim them. Issue text ready in `tasks/issue-d.md`, not posted
+- D: REPRODUCED in my cloud project. `@observe` async functions started by `asyncio.run`, `create_task` or `gather` record Python's `asyncio/events.py:88`, with an absolute path that includes the username (blur it in public screenshots). No duplicate found 2026-11-24. The dispatcher rows are by design (#1027), do not claim them. Filed as traceroot-py #248, text in `tasks/issue-d.md`
 - E: chat panel shows literal backticks around inline code (seen in my UI). Likely a one-line CSS class fix in `frontend/ui/src/features/ai-assistant/components/message-list.tsx`. Small React PR, matches the role
 - F: chat footer "2 in" next to "29,055 session" hides cached input (seen in my UI, cause not confirmed)
 - Skip, already reported: `whoami` http host (#2675), missing cost shown as 0 (#2736, PR #2740)
