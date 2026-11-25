@@ -78,6 +78,28 @@ I opened the chat on my first trace and typed "nothing". It used one of the free
 - **Do not claim:** that recording the call site is wrong. traceroot #1027 says that is intended, so the dispatcher rows are by design.
 - Local test: skipping standard library frames fixes `asyncio.run`. For `create_task` it records the `asyncio.run` line, so it is only a partial fix.
 
+## 2026-11-25: first traced agent runs (Cloud, issue 1218, commit `dbee46e`)
+
+| | 3B | 4B |
+|---|---|---|
+| Result | no answer, 12 calls, `stop:max_calls` | correct file, 9 calls |
+| Time | 14 s | 2 min 4 s (82 s and 8 calls on 2026-11-24) |
+| Tokens | 5.0K in, 319 out | 20.1K in, 982 out |
+| Failed tool calls | 2, every tool span OK | 1, every tool span OK |
+
+Facts (UI screenshots and API):
+- The tree shows each tool as `grep` or `read_file` with a time, so repeated searches only show when I open each span.
+- Trace metadata arrived (stop, answer, calls, tool errors). The public API does not return tags, and `?tags=` is ignored.
+- Same settings, different path: the 4B run is not fully repeatable at temperature 0 with a fixed seed.
+- The 4B thinking text is stored in the model span output, but `reasoning_tokens` is 0, probably because Ollama does not report it.
+- Minor: tool spans renamed with `update_current_span(name=...)` keep `call_tool` in `traceroot.span.path`. Not checked whether that matters.
+
+My answers:
+- [ ] From the trace list alone, can I tell the 3B run failed?
+- [ ] How many clicks to see the 3B repeated the same searches?
+- [ ] Can the UI filter the trace list by tag, for example `stop:max_calls`?
+- [ ] Anything else confusing or missing:
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.
