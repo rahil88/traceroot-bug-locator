@@ -10,10 +10,10 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - [x] `qwen2.5-3b-16k`: `ollama ps` shows 16384. Long prompt test: default kept 2,050 of 7,208 tokens with no error and missed the fact, 16k found it
   - [x] `qwen3.5-4b-16k`: `ollama ps` shows 16384. It runs on MLX, where the default kept all 7,190 tokens, so it does not cut the prompt the same way
   - Watch: one model loaded at a time (`ollama stop <model>`), 16 GB RAM was swapping. Set temperature 0 on both, the 4B defaults to 1
-- [ ] 3. TraceRoot cloud account, API key, one traced call. Write friction in `notes.md` as it happens (1 h)
+- [x] 3. TraceRoot cloud account, API key, one traced call. Write friction in `notes.md` as it happens (1 h)
   - [x] account, key, project `bug-locator`, first trace arrived (checked through the API: 2 spans, 35 in, 9 out)
   - [x] `notes.md` started (Claude drafted from recorded facts)
-  - [ ] I check the trace in the UI (done) and write the first impression line in `notes.md`
+  - [x] I check the trace in the UI and write the first impression line in `notes.md`
 - [x] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
   - Chosen 15: 3076, 3075, 3073, 2030, 1568, 1567, 1244, 1224, 1218, 1198, 1154, 857, 625, 557, 556. Spare: 1162
   - Dropped: 706 and 75 (style or rename), 578, 552, 167, 126, 118 (text too thin, mostly screenshots)

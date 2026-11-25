@@ -53,8 +53,8 @@ Predictions come from the UI source on `main` at `7f600b2`. The cloud may run a 
 - [x] How does the UI show the missing cost?
   - Source: "-" in the trace list, and no cost chip on the model span.
   - What I saw: no cost anywhere in the trace tree or the trace header, only latency and tokens (35 in, 9 out, 44 total). The list's cost column was out of view.
-- [ ] First impression: was it easy to find the trace and understand it?
-  - What I saw:
+- [x] First impression: was it easy to find the trace and understand it?
+  - What I saw: easy to find your first trace
 
 ## 2026-11-24: AI chat panel (Cloud, UI v1.3.10)
 I opened the chat on my first trace and typed "nothing". It used one of the free chat runs.
