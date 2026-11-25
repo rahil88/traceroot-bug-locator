@@ -33,7 +33,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - A: `@observe` async tool cancelled by `asyncio.wait_for` is stored OK, no output
 - B: failed OpenAI chat call is stored with no model (Anthropic keeps it)
 - C: streamed call without usage is over-counted ("Hi": 86 output tokens stored, 2 real)
-- D: `@observe` records where a function is called, not where it is defined. Tools called from one dispatcher all get the dispatcher line, and an async tool run with `asyncio.create_task` gets Python's `_run`. Their RCA prompt tells the agent to read that source. First sighting in my cloud trace: `smoke.py:18 <module>`. No existing report found 2026-11-24
+- D: `@observe` records where a function is called, not where it is defined. Tools called from one dispatcher all get the dispatcher line, and an async tool run with `asyncio.create_task` gets Python's `_run`. Their RCA prompt tells the agent to read that source. First sighting in my cloud trace: `smoke.py:18 <module>`. No existing report found 2026-11-24. The UI shows the location only on failed spans, so reproduce it with an async tool that raises
 - Skip, already reported: `whoami` http host (#2675), missing cost shown as 0 (#2736, PR #2740)
 
 ## Review

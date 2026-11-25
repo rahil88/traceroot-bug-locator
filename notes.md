@@ -33,16 +33,26 @@ Setup: Python SDK 0.5.1, OpenAI client pointed at Ollama, macOS.
 - Local test: `grep` and `read_file`, called from one dispatcher, both get the dispatcher's line.
 - Local test: an async tool run with `asyncio.create_task` gets `_run`, line 88, inside Python's asyncio code.
 - Why it may matter: the root cause prompt tells the agent to read the source at that file and line.
+- UI source: file and line are shown only when a span fails, so a wrong location would show up exactly when someone is debugging.
 - Not sure yet: the SDK comment says "first frame outside SDK internals", so the call site may be intended.
 
 **Install size**
 - `uv add traceroot openai python-dotenv` gave a 41 MB environment, including 15 OpenInference packages for frameworks and providers I do not use.
 
-## To fill in (only I can answer)
+## Open questions (my answers)
+Predictions come from the UI source on `main` at `7f600b2`. The cloud may run a different version, so I only tick a box after I see it.
+
 - [ ] Did the "Waiting for your first trace" page update by itself, and how long did it take?
-- [ ] In the UI, does `first-trace` show or link to `smoke.py:18`? Where does the link go?
+  - Source: not checked for the onboarding page. The traces page asks every 3 s until a first trace exists.
+  - What I saw:
+- [ ] In the UI, does `first-trace` show or link to `smoke.py:18`?
+  - Source: no. File and line only appear in the error box of a failed span, as plain text with no link. `first-trace` succeeded, so it should show nothing.
+  - What I saw:
 - [ ] How does the UI show the missing cost?
+  - Source: "-" in the trace list, and no cost chip on the model span.
+  - What I saw:
 - [ ] First impression: was it easy to find the trace and understand it?
+  - What I saw:
 
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
