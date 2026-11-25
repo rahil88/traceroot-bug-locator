@@ -6,9 +6,10 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 
 ## Day 1: build (about 6 h)
 - [x] 1. `git init` here, push to a new GitHub repo, `.env` in `.gitignore` (15 min)
-- [ ] 2. Give Ollama a bigger context: default is 4096. Use `models/*.Modelfile` with `num_ctx 16384`, confirm with `ollama ps` (15 min)
+- [x] 2. Give Ollama a bigger context: default is 4096. Use `models/*.Modelfile` with `num_ctx 16384`, confirm with `ollama ps` (15 min)
   - [x] `qwen2.5-3b-16k`: `ollama ps` shows 16384. Long prompt test: default kept 2,050 of 7,208 tokens with no error and missed the fact, 16k found it
-  - [ ] `qwen3.5-4b-16k`
+  - [x] `qwen3.5-4b-16k`: `ollama ps` shows 16384. It runs on MLX, where the default kept all 7,190 tokens, so it does not cut the prompt the same way
+  - Watch: one model loaded at a time (`ollama stop <model>`), 16 GB RAM was swapping. Set temperature 0 on both, the 4B defaults to 1
 - [ ] 3. TraceRoot cloud account, API key, one traced call. Write friction in `notes.md` as it happens (1 h)
 - [ ] 4. Hand-pick 15 issues from `tasks/candidates.md`, real bugs only (about 20 of the 46 look like bugs by title). Export each pre-fix tree with `git archive`, so there is no `.git` to leak the fix (1 h)
 - [ ] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
@@ -18,7 +19,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 
 ## Day 2: measure and report (about 6 h)
 - [ ] 8. Scorer: hit if any of 3 paths is in the real fix. Plus a no-LLM keyword grep baseline (45 min)
-- [ ] 9. Run 15 issues on qwen2.5:3b, then qwen3.5:4b (pull is about 3.3 GB). Qwen only, no cloud models (1.5 h)
+- [ ] 9. Run 15 issues on `qwen2.5-3b-16k`, then `qwen3.5-4b-16k`. Qwen only, no cloud models (1.5 h)
 - [ ] 10. Read 10 failed traces. Label each: bad search, loop, invented path, opened then dropped, context overflow, gave up (1 h)
 - [ ] 11. Reproduce leads A, B, C in the cloud UI, plus anything in `notes.md` (1 h)
 - [ ] 12. Search duplicates again, file one issue with a minimal repro (45 min)
