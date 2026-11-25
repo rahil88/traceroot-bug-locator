@@ -7,3 +7,12 @@ dependencies = [
     "python-dotenv>=1.2.4",
     "traceroot==0.5.1",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["test_tools.py"]
+norecursedirs = ["data", ".venv"]

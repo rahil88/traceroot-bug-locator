@@ -19,7 +19,8 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - Dropped: 706 and 75 (style or rename), 578, 552, 167, 126, 118 (text too thin, mostly screenshots)
   - Easier cases: 3076 ("Copy buttons") and 1218 (`ModelSelector`) nearly name their file. Report them separately
   - Built by `prepare_data.py`: every answer file exists in its tree, no `.git`, no issue names its answer file, no tree mentions its issue number
-- [ ] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
+- [x] 5. Three tools: `grep`, `read_file`, `answer` (max 3 paths). Cap output, block paths outside the tree, return errors as text (1 h)
+  - `tools.py`, 23 tests in `test_tools.py`. Grep shows at most 3 lines per file and puts tests and docs last
 - [ ] 6. Agent loop: max 12 tool calls, stop on `answer`. One issue working end to end (1.5 h)
 - [ ] 7. Tracing: `Integration.OPENAI`, `@observe` on loop and tools, tags for issue, model and outcome (45 min)
   - Checkpoint: one full trace in the UI, tree matches what the agent did
