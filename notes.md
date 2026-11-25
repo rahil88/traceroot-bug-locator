@@ -94,8 +94,18 @@ Facts (UI screenshots and API):
 - The 4B thinking text is stored in the model span output, but `reasoning_tokens` is 0, probably because Ollama does not report it.
 - Minor: tool spans renamed with `update_current_span(name=...)` keep `call_tool` in `traceroot.span.path`. Not checked whether that matters.
 
+What the 3B model asked for (model call spans, read through the API):
+
+| Model call | Asked for |
+|---|---|
+| 1 | 4 calls at once: 2 searches and 2 reads of files that do not exist (`src/components/ModelSelector.js`) |
+| 2 to 5 | the same 2 invented files again, swapping `onChange` and `value`, with a `path` argument grep does not have |
+
+5 model calls made 12 tool calls. 10 of the 12 searches found nothing, but only 2 count as `tool_errors`, because "no matches" is not an error in my code.
+
 My answers:
-- [ ] From the trace list alone, can I tell the 3B run failed?
+- [x] From the trace list alone, can I tell the 3B run failed?
+  - "i cant see anything failing or being detected in 3b"
 - [ ] How many clicks to see the 3B repeated the same searches?
 - [ ] Can the UI filter the trace list by tag, for example `stop:max_calls`?
 - [ ] Anything else confusing or missing:
