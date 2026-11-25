@@ -33,7 +33,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - A: `@observe` async tool cancelled by `asyncio.wait_for` is stored OK, no output
 - B: failed OpenAI chat call is stored with no model (Anthropic keeps it)
 - C: streamed call without usage is over-counted ("Hi": 86 output tokens stored, 2 real)
-- D: REPRODUCED in my cloud project. `@observe` async functions started by `asyncio.run`, `create_task` or `gather` record Python's `asyncio/events.py:88`, with an absolute path that includes the username (blur it in public screenshots). No duplicate found 2026-11-24. The dispatcher rows are by design (#1027), do not claim them. Issue draft in `tasks/issue-d.md`, not posted
+- D: REPRODUCED in my cloud project. `@observe` async functions started by `asyncio.run`, `create_task` or `gather` record Python's `asyncio/events.py:88`, with an absolute path that includes the username (blur it in public screenshots). No duplicate found 2026-11-24. The dispatcher rows are by design (#1027), do not claim them. Issue text ready in `tasks/issue-d.md`, not posted
 - E: chat panel shows literal backticks around inline code (seen in my UI). Likely a one-line CSS class fix in `frontend/ui/src/features/ai-assistant/components/message-list.tsx`. Small React PR, matches the role
 - F: chat footer "2 in" next to "29,055 session" hides cached input (seen in my UI, cause not confirmed)
 - Skip, already reported: `whoami` http host (#2675), missing cost shown as 0 (#2736, PR #2740)
