@@ -47,7 +47,7 @@ Predictions come from the UI source on `main` at `7f600b2`. The cloud may run a 
   - What I saw: yes, it updated by itself. I did not time it.
 - [ ] In the UI, does `first-trace` show or link to `smoke.py:18`?
   - Source: no. File and line only appear in the error box of a failed span, as plain text with no link. `first-trace` succeeded, so it should show nothing.
-  - What I saw (UI v1.3.10): the trace row shows repo and ref `ca8513d`, and no file or line. I have not clicked the agent span (second row) yet, and that is where a source location would be.
+  - What I saw (UI v1.3.10): the trace row shows a repo link and a commit link (`ca8513d`), and no file or line. The UI source confirms both chips are GitHub links, shown only on the trace row. I have not clicked the agent span (second row) yet, and that is where a source location would be.
 - [x] How does the UI show the missing cost?
   - Source: "-" in the trace list, and no cost chip on the model span.
   - What I saw: no cost anywhere in the trace tree or the trace header, only latency and tokens (35 in, 9 out, 44 total). The list's cost column was out of view.
