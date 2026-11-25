@@ -49,6 +49,16 @@ async def agent():
             tool()
         except ValueError:
             pass
+    try:
+        await asyncio.gather(tool_gather())
+    except ValueError:
+        pass
+
+
+# Defined last so the line numbers in notes.md stay the same.
+@observe(name="tool-gather", type="tool")
+async def tool_gather():
+    raise ValueError("failed inside tool_gather")
 
 
 asyncio.run(agent())
