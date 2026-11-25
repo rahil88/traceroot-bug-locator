@@ -33,7 +33,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - A: `@observe` async tool cancelled by `asyncio.wait_for` is stored OK, no output
 - B: failed OpenAI chat call is stored with no model (Anthropic keeps it)
 - C: streamed call without usage is over-counted ("Hi": 86 output tokens stored, 2 real)
-- D: `@observe` records where a function is called, not where it is defined. Tools called from one dispatcher all get the dispatcher line, and an async tool run with `asyncio.create_task` gets Python's `_run`. Their RCA prompt tells the agent to read that source. First sighting in my cloud trace: `smoke.py:18 <module>`. No existing report found 2026-11-24. The UI shows the location only on failed spans, so reproduce it with an async tool that raises. Local test: even a plain `asyncio.run(agent())` records `asyncio/events.py:88`, with an absolute path that includes the username. Blur it in any public screenshot
+- D: REPRODUCED in my cloud project. `@observe` async functions started by `asyncio.run`, `create_task` or `gather` record Python's `asyncio/events.py:88`, with an absolute path that includes the username (blur it in public screenshots). No duplicate found 2026-11-24. The dispatcher rows are by design (#1027), do not claim them. Issue draft in `tasks/issue-d.md`, not posted
 - E: chat panel shows literal backticks around inline code (seen in my UI). Likely a one-line CSS class fix in `frontend/ui/src/features/ai-assistant/components/message-list.tsx`. Small React PR, matches the role
 - F: chat footer "2 in" next to "29,055 session" hides cached input (seen in my UI, cause not confirmed)
 - Skip, already reported: `whoami` http host (#2675), missing cost shown as 0 (#2736, PR #2740)

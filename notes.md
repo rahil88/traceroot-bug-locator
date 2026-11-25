@@ -62,6 +62,20 @@ I opened the chat on my first trace and typed "nothing". It used one of the free
 - **Visible backticks (lead E).** The trace ID shows with literal backticks around it, inside the gray code style. In the source, the chat uses Tailwind's `prose` class, which adds backticks to inline code by default, and the inline `code` style in `message-list.tsx` does not turn that off. No existing report found.
 - **Token line does not add up (lead F).** It shows "2 in, 191 out, 29,055 session, $0.1852" on the first message. "in" is labeled "Input tokens" and "session" is labeled "Cumulative session tokens". My guess: "in" leaves out cached input. 28,862 cache write tokens at $6.25 per million, plus 191 out at $25, comes to $0.1852, which matches. Not confirmed.
 
+## 2026-11-24: lead D reproduced (Cloud, `repro_d.py`, commit `5ef5e2e`, about 21:01 PST)
+
+| Span | Defined at | Recorded | Seen in |
+|---|---|---|---|
+| `tool-create-task` | `repro_d.py:18` | `.../asyncio/events.py:88` `_run`, absolute path | UI error box and API |
+| `repro-d` (agent) | `repro_d.py:38` | `.../asyncio/events.py:88` `_run` | API |
+| `tool-await` | `repro_d.py:23` | `repro_d.py:44` | API |
+| `tool-dispatch-a` | `repro_d.py:28` | `repro_d.py:49` | UI error box and API |
+| `tool-dispatch-b` | `repro_d.py:33` | `repro_d.py:49` | API |
+
+- **Claim:** async functions started by the event loop record Python's asyncio file instead of my code.
+- **Do not claim:** that recording the call site is wrong. traceroot #1027 says that is intended, so the dispatcher rows are by design.
+- Local test: skipping standard library frames fixes `asyncio.run`. For `create_task` it records the `asyncio.run` line, so it is only a partial fix.
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.
