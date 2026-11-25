@@ -25,6 +25,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - `agent.py`, 8 tests. First run on 1218: 3B looped for 12 calls and never answered (15 s). 4B found the right file in 8 calls (82 s). 1218 is one of the two easier issues
   - Do not tune the prompt on these 15 issues, or say so in the README
 - [ ] 7. Tracing: `Integration.OPENAI`, `@observe` on loop and tools, tags for issue, model and outcome (45 min)
+  - Code done in `agent.py`: agent span `bug-locator`, one span per tool named after it (`tool_error` in metadata, status stays OK), model spans from `Integration.OPENAI`, tags `issue:`, `model:`, `stop:`. Checked against the local sink: 1 trace, 18 spans for the 3B run on 1218
   - Checkpoint: one full trace in the UI, tree matches what the agent did
 
 ## Day 2: measure and report (about 6 h)
