@@ -26,7 +26,7 @@ Setup: Python SDK 0.5.1, OpenAI client pointed at Ollama, macOS.
 
 - Worked on the first run. The nesting was right, and the model and tokens were recorded.
 - Cost is empty on the span, but the API returns `total_cost: 0.0` for the trace. Already reported (#2736), skip.
-- The commit it recorded (`ca8513d`) did not contain `smoke.py` yet, because I had not committed it. Nothing in the API response marks the code as uncommitted.
+- The commit it recorded (`ca8513d`) did not contain `smoke.py` yet, because I had not committed it. The UI shows that ref, and neither the trace panel nor the API response marks the code as uncommitted.
 
 **Source location is the call site (lead D)**
 - Cloud: `ask` is defined on line 12, but the trace says line 18, where it is called.
@@ -42,15 +42,15 @@ Setup: Python SDK 0.5.1, OpenAI client pointed at Ollama, macOS.
 ## Open questions (my answers)
 Predictions come from the UI source on `main` at `7f600b2`. The cloud may run a different version, so I only tick a box after I see it.
 
-- [ ] Did the "Waiting for your first trace" page update by itself, and how long did it take?
+- [x] Did the "Waiting for your first trace" page update by itself, and how long did it take?
   - Source: not checked for the onboarding page. The traces page asks every 3 s until a first trace exists.
-  - What I saw:
+  - What I saw: yes, it updated by itself. I did not time it.
 - [ ] In the UI, does `first-trace` show or link to `smoke.py:18`?
   - Source: no. File and line only appear in the error box of a failed span, as plain text with no link. `first-trace` succeeded, so it should show nothing.
-  - What I saw:
-- [ ] How does the UI show the missing cost?
+  - What I saw (UI v1.3.10): the trace row shows repo and ref `ca8513d`, and no file or line. I have not clicked the agent span (second row) yet, and that is where a source location would be.
+- [x] How does the UI show the missing cost?
   - Source: "-" in the trace list, and no cost chip on the model span.
-  - What I saw:
+  - What I saw: no cost anywhere in the trace tree or the trace header, only latency and tokens (35 in, 9 out, 44 total). The list's cost column was out of view.
 - [ ] First impression: was it easy to find the trace and understand it?
   - What I saw:
 
