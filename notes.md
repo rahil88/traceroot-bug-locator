@@ -126,6 +126,15 @@ Setup: template "Task completion" unchanged, default judge model, no filter, sam
 - Each finding became its own signal: "Fails to provide the required file list after unsuccessful file search" and "Omits the required regression-test file from the proposed file list".
 - Cost: 2 of 100 detector runs. No root cause analysis runs.
 
+## 2026-11-25: task in the root span input (one variable)
+
+Change: the `bug-locator` root span input now also holds the system prompt as `task` ("You find which source files must change to fix a bug ... call answer with 1 to 3 file paths"). Nothing else changed.
+
+- 4B on 1218 (trace `e1a73d9d`, about 16:20): answered `frontend/ui/src/features/ai-assistant/components/model-selector.tsx`, correct for our task, 8 calls, 76 s.
+- Detector: flagged again, about 60 s after the run. "The agent identified the ModelSelector implementation file but gave no regression-test file despite the acceptance criteria requiring a regression test, so the requested set of files is incomplete."
+- Same verdict as the 15:59 run. Putting the task in the input did not change it: the judge still holds the agent to the issue's acceptance criteria.
+- Cost: 1 more detector run (3 of 100 used).
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.

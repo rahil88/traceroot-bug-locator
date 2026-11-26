@@ -33,7 +33,7 @@ def ollama():
 def run(number, model=DEFAULT_MODEL, client=None, log=lambda line: None):
     issue = json.loads(Path(f"data/issues/{number}.json").read_text())
     text = f"{issue['title']}\n\n{issue['body'] or ''}"
-    update_current_span(input={"issue": number, "model": model, "text": text})
+    update_current_span(input={"task": SYSTEM, "issue": number, "model": model, "text": text})
     result = {"issue": number, "model": model,
               **run_loop(text, Tools(f"data/trees/{number}"), model, client or ollama(), log)}
     errors = sum(c["error"] for c in result["calls"])
