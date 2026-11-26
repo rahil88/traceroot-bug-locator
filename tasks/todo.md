@@ -33,6 +33,7 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 ## Day 2: measure and report (about 6 h)
 - [x] 8. Scorer: hit if any of 3 paths is in the real fix. Plus a no-LLM keyword grep baseline (45 min)
   - `score.py` (hit = any answer file in the real fix, test files ignored) and `baseline.py` (keyword ranking, no model). Baseline: 8/15, 0.3 s per issue, missed both easy issues. Written before seeing scores, not tuned
+  - `run_batch.py`: one model at a time, results to `results/<model>.jsonl` after each issue, resumes, survives a crash, one TraceRoot session per model, trace id saved per run. Checked against the local sink on 2 issues
 - [ ] 9. Run 15 issues on `qwen2.5-3b-16k`, then `qwen3.5-4b-16k`. Qwen only, no cloud models (1.5 h)
 - [ ] 10. Read 10 failed traces. Label each: bad search, loop, invented path, opened then dropped, context overflow, gave up (1 h)
 - [ ] 11. Reproduce leads A, B, C in the cloud UI, plus anything in `notes.md` (1 h)

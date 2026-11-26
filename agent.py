@@ -11,7 +11,7 @@ import time
 from pathlib import Path
 
 from openai import OpenAI, OpenAIError
-from traceroot import observe, update_current_span, update_current_trace
+from traceroot import get_current_trace_id, observe, update_current_span, update_current_trace
 
 from tools import SCHEMAS, Tools
 
@@ -30,14 +30,16 @@ def ollama():
 
 
 @observe(name="bug-locator", type="agent", capture_input=False)
-def run(number, model=DEFAULT_MODEL, client=None, log=lambda line: None):
+def run(number, model=DEFAULT_MODEL, client=None, log=lambda line: None, session_id=None):
     issue = json.loads(Path(f"data/issues/{number}.json").read_text())
     text = f"{issue['title']}\n\n{issue['body'] or ''}"
     update_current_span(input={"task": SYSTEM, "issue": number, "model": model, "text": text})
     result = {"issue": number, "model": model,
               **run_loop(text, Tools(f"data/trees/{number}"), model, client or ollama(), log)}
     errors = sum(c["error"] for c in result["calls"])
+    result["trace_id"] = get_current_trace_id()
     update_current_trace(
+        session_id=session_id,
         tags=[f"issue:{number}", f"model:{model}", f"stop:{result['stop']}"],
         metadata={"issue": number, "model": model, "stop": result["stop"], "answer": result["answer"],
                   "calls": len(result["calls"]), "tool_errors": errors, "seconds": result["seconds"],
