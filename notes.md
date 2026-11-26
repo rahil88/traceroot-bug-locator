@@ -110,6 +110,22 @@ My answers:
 - [ ] Can the UI filter the trace list by tag, for example `stop:max_calls`?
 - [ ] Anything else confusing or missing:
 
+## 2026-11-25: Task completion detector (Cloud)
+
+Setup: template "Task completion" unchanged, default judge model, no filter, sampling 100%, root cause analysis Manual. Then I ran 1218 again on both models.
+
+| Run | Flagged | Detector summary (from the findings API) |
+|---|---|---|
+| 3B, 15:58, `stop:max_calls` | Yes | "did not complete the file-identification request: it exhausted its tool calls searching nonexistent or unmatched paths and returned an empty answer" |
+| 4B, 15:59, correct file | Yes | "identified the ModelSelector source file but did not include a regression-test file, and its proposed model-ID fallback would not preserve a model absent from the catalog" |
+
+- The 3B catch is right, and its summary names the real cause.
+- The 4B flag is not simply wrong. The issue's acceptance criteria say "Regression test covering this case", and the real fix (PR #1234) also added a new `model-selector.test.tsx`. My `answers.json` lists only the source file, because the candidate filter left test files out.
+- The judge graded against the issue text, which is the root span's input. The agent's real job ("name 1 to 3 files to change") is only in the system prompt inside the model spans.
+- The judge also read the 4B's reasoning and criticized the fix it had in mind.
+- Each finding became its own signal: "Fails to provide the required file list after unsuccessful file search" and "Omits the required regression-test file from the proposed file list".
+- Cost: 2 of 100 detector runs. No root cause analysis runs.
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.
