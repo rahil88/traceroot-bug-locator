@@ -34,7 +34,10 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
 - [x] 8. Scorer: hit if any of 3 paths is in the real fix. Plus a no-LLM keyword grep baseline (45 min)
   - `score.py` (hit = any answer file in the real fix, test files ignored) and `baseline.py` (keyword ranking, no model). Baseline: 8/15, 0.3 s per issue, missed both easy issues. Written before seeing scores, not tuned
   - `run_batch.py`: one model at a time, results to `results/<model>.jsonl` after each issue, resumes, survives a crash, one TraceRoot session per model, trace id saved per run. Checked against the local sink on 2 issues
-- [ ] 9. Run 15 issues on `qwen2.5-3b-16k`, then `qwen3.5-4b-16k`. Qwen only, no cloud models (1.5 h)
+- [x] 9. Run 15 issues on `qwen2.5-3b-16k`, then `qwen3.5-4b-16k`. Qwen only, no cloud models (1.5 h)
+  - 3B 3/15, 4B 6/15, baseline 8/15. 3B batch about 17 min, 4B about 32 min, no crashes
+  - `detector_check.py`: the detector flagged 20 of 21 misses and 3 of 9 hits. Each of the 4 disagreements is explained by the real PR files (see `notes.md`)
+  - The answer key also dropped non-test files (`.gitignore` on 625, the example files on 1154). Scored against every file in the real PRs, the 4B gets 7/15. Report both in the README
 - [ ] 10. Read 10 failed traces. Label each: bad search, loop, invented path, opened then dropped, context overflow, gave up (1 h)
 - [ ] 11. Reproduce leads A, B, C in the cloud UI, plus anything in `notes.md` (1 h)
 - [x] 12. Search duplicates again, file one issue (traceroot-py #248) with a minimal repro (45 min)

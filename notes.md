@@ -135,6 +135,38 @@ Change: the `bug-locator` root span input now also holds the system prompt as `t
 - Same verdict as the 15:59 run. Putting the task in the input did not change it: the judge still holds the agent to the issue's acceptance criteria.
 - Cost: 1 more detector run (3 of 100 used).
 
+## 2026-11-26: batch results and the detector check (Claude checked these through the API)
+
+Scores (`uv run score.py results/*.jsonl`): keyword baseline 8/15, 3B 3/15, 4B 6/15. Both models score below the no-LLM baseline.
+- Most failed runs never gave an answer: 12 for the 3B and 7 for the 4B. The answers they did give were mostly right: 3 of 3 for the 3B and 6 of 8 for the 4B.
+- On 556, 557, 625 and 1244, the 3B made 0 tool calls and stopped.
+- The 4B solved 1218, 3073 and 3075, which the baseline missed.
+
+Detector against the scorer, 30 runs, sampling 100% (`uv run detector_check.py`, saved in `results/detector.jsonl`):
+
+| Scorer | Runs | Flagged by detector |
+|---|---|---|
+| miss | 21 | 20 |
+| hit | 9 | 3 |
+
+The 4 disagreements, checked against the files in the real fix PRs:
+
+| Run | Scorer | Detector | Who is right |
+|---|---|---|---|
+| 4B 625 | miss | not flagged | Detector. The answer was `.gitignore`, and PR #668 changed `.gitignore`. My answer key left that file out. |
+| 3B 2030 | hit | "Includes unrelated files" | Detector, by a stricter rule: 2 of its 3 files are not in PR #2134 |
+| 3B 1154 | hit | "Includes unrelated files" | Detector, by a stricter rule: 2 of its 3 files are not in PR #1155 |
+| 4B 1154 | hit | "Omits a required implementation file" | Detector: PR #1155 changed `examples/python/claude-agent-sdk/main.py`, which the answer left out |
+
+- **The answer key is too narrow.** It dropped test files, and also `.gitignore` and a new migration (625) and the example files and `pyproject.toml` (1154). Scored against every file in the real PRs, the 4B gets 7/15. The baseline and 3B stay the same.
+- **The summaries match the raw traces where I checked.**
+  - On 1567 the 3B wrote `answer([...])` as plain text instead of making a tool call.
+  - On 1244 the 4B called `answer` with an empty list and got an error.
+- **A summary can repeat the agent's wrong claim.** On 1244 the 4B reasoned that the fix is "in the agent repo (separate from this monorepo)", and the detector listed that as what the agent got right. The real fix is `frontend/packages/agent/src/tools/download-traces.ts`, which is in the same repo.
+- **The same answer got different verdicts.** On 1218 the 4B answered `model-selector.tsx` in all 3 runs. The 15:59 and 16:20 runs were flagged for the missing regression test, but the batch run was not.
+- **One signal mixes two failures.** The 23 findings are grouped into 7 signals. "Skips repository inspection and returns no required file list" holds both the 3B runs with 0 tool calls and the 4B runs on 556 and 557, which made 12 searches but read no file.
+- **Cost:** 30 more detector runs, which should mean 33 of 100 used. Not yet checked in the UI.
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.
