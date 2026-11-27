@@ -1,0 +1,121 @@
+{
+ "3076": {
+  "pr": 3081,
+  "files": [
+   "frontend/ui/src/components/ui/copy-button.test.tsx",
+   "frontend/ui/src/components/ui/copy-button.tsx"
+  ]
+ },
+ "3075": {
+  "pr": 3080,
+  "files": [
+   "frontend/ui/src/features/settings/workspace/components/MembersTab.test.tsx",
+   "frontend/ui/src/features/settings/workspace/components/MembersTab.tsx"
+  ]
+ },
+ "3073": {
+  "pr": 3078,
+  "files": [
+   "frontend/ui/src/features/settings/project/components/AccessKeysTab.test.tsx",
+   "frontend/ui/src/features/settings/project/components/AccessKeysTab.tsx",
+   "frontend/ui/src/features/settings/workspace/components/MembersTab.test.tsx",
+   "frontend/ui/src/features/settings/workspace/components/MembersTab.tsx",
+   "frontend/ui/src/features/settings/workspace/components/ModelProvidersTab.test.tsx",
+   "frontend/ui/src/features/settings/workspace/components/ModelProvidersTab.tsx"
+  ]
+ },
+ "2030": {
+  "pr": 2134,
+  "files": [
+   "frontend/worker/src/alerts/__tests__/scheduler.test.ts",
+   "frontend/worker/src/alerts/__tests__/severity-state-machine.test.ts",
+   "frontend/worker/src/alerts/scheduler.ts",
+   "frontend/worker/src/alerts/severity-state-machine.ts"
+  ]
+ },
+ "1568": {
+  "pr": 1570,
+  "files": [
+   "frontend/worker/src/processors/__tests__/detector-rca-processor.test.ts",
+   "frontend/worker/src/processors/__tests__/detector-run-processor.test.ts",
+   "frontend/worker/src/processors/detector-rca-processor.ts",
+   "frontend/worker/src/processors/detector-run-processor.ts"
+  ]
+ },
+ "1567": {
+  "pr": 1569,
+  "files": [
+   "backend/db/clickhouse/client.py",
+   "backend/worker/otel_transform.py",
+   "tests/db/test_client.py",
+   "tests/worker/test_detector_tasks.py",
+   "tests/worker/test_environment_pipeline.py",
+   "tests/worker/test_otel_transform.py"
+  ]
+ },
+ "1244": {
+  "pr": 1245,
+  "files": [
+   "frontend/packages/agent/src/tools/__tests__/download-traces.test.ts",
+   "frontend/packages/agent/src/tools/download-traces.ts"
+  ]
+ },
+ "1224": {
+  "pr": 1227,
+  "files": [
+   "frontend/ui/src/features/settings/workspace/components/ModelProvidersTab.test.tsx",
+   "frontend/ui/src/features/settings/workspace/components/ModelProvidersTab.tsx"
+  ]
+ },
+ "1218": {
+  "pr": 1234,
+  "files": [
+   "frontend/ui/src/features/ai-assistant/components/model-selector.test.tsx",
+   "frontend/ui/src/features/ai-assistant/components/model-selector.tsx"
+  ]
+ },
+ "1198": {
+  "pr": 1203,
+  "files": [
+   "frontend/ui/src/components/list-pagination.test.tsx",
+   "frontend/ui/src/components/list-pagination.tsx"
+  ]
+ },
+ "1154": {
+  "pr": 1155,
+  "files": [
+   "backend/worker/otel_transform.py",
+   "backend/worker/tests/test_otel_transform_token_estimation_skip.py",
+   "examples/python/claude-agent-sdk/main.py",
+   "examples/python/claude-agent-sdk/requirements.txt",
+   "pyproject.toml"
+  ]
+ },
+ "857": {
+  "pr": 858,
+  "files": [
+   "frontend/ui/src/features/traces/utils/index.ts"
+  ]
+ },
+ "625": {
+  "pr": 668,
+  "files": [
+   ".gitignore",
+   "frontend/packages/core/prisma/migrations/20260413180351_init/migration.sql",
+   "tmux_tools/launcher.py"
+  ]
+ },
+ "557": {
+  "pr": 577,
+  "files": [
+   "frontend/ui/src/components/layout/app-layout.tsx",
+   "frontend/ui/src/features/ai-assistant/components/ai-assistant-panel.tsx"
+  ]
+ },
+ "556": {
+  "pr": 564,
+  "files": [
+   "frontend/ui/src/features/settings/workspace/components/MembersTab.tsx"
+  ]
+ }
+}

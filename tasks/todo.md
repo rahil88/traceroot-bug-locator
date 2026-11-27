@@ -39,9 +39,11 @@ Out of scope: fixing bugs, a UI, multi-agent, comments posted by the agent on th
   - `detector_check.py`: the detector flagged 20 of 21 misses and 3 of 9 hits. Each of the 4 disagreements is explained by the real PR files (see `notes.md`)
   - The answer key also dropped non-test files (`.gitignore` on 625, the example files on 1154). Scored against every file in the real PRs, the 4B gets 7/15. Report both in the README
 - [ ] 10. Read 10 failed traces. Label each: bad search, loop, invented path, opened then dropped, context overflow, gave up (1 h)
+  - `analyze.py` labels all 20 failures from the run logs: opened then dropped 6, gave up 4, invented path 3, loop 3, bad search 3, wrong file 1. Left: spot-check 3 traces in the UI
 - [ ] 11. Reproduce leads A, B, C in the cloud UI, plus anything in `notes.md` (1 h)
 - [x] 12. Search duplicates again, file one issue (traceroot-py #248) with a minimal repro (45 min)
 - [ ] 13. README with results table and limits, then the application paragraph (1 h)
+  - README drafted from measured results. Left: the application paragraph (yours), make the repo public
 - [ ] Stretch: PR for lead B, or rerun as a TraceRoot eval
 
 ## Leads to reproduce (found in a local probe, SDK 0.5.1)
