@@ -167,6 +167,28 @@ The 4 disagreements, checked against the files in the real fix PRs:
 - **One signal mixes two failures.** The 23 findings are grouped into 7 signals. "Skips repository inspection and returns no required file list" holds both the 3B runs with 0 tool calls and the 4B runs on 556 and 557, which made 12 searches but read no file.
 - **Cost:** 30 more detector runs, which should mean 33 of 100 used. Not yet checked in the UI.
 
+## Step 10: why the failed runs failed (my reading of the traces)
+
+Labels: bad search, loop, invented path, opened then dropped, context overflow, gave up.
+
+| # | Run | Ended | Label | What I saw |
+|---|---|---|---|---|
+| 1 | [3B 556](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=d2a9b65d90de10e97b5132405b16c969) | 0 calls | | |
+| 2 | [3B 1198](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=1bbf2266a4d06e1c455c2213bfcdce9d) | stopped after 10 calls | | |
+| 3 | [3B 1218 (easy)](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=37dfe2e966d48f8cc4be4a0fce13589a) | out of calls | | |
+| 4 | [3B 3075](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=9f7372e16b2d3b0b2c7443ed15fdf038) | out of calls | | |
+| 5 | [4B 556](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=ec9121caa24809b7a7e4034474fdebdb) | out of calls | | |
+| 6 | [4B 857](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=f7e2adcca29ab08238cf1b014e2dd1b3) | out of calls | | |
+| 7 | [4B 1244](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=d9e46e02432f421d8cb4bac4ebfce78a) | out of calls | | |
+| 8 | [4B 2030](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=ad04c2f5f299a9f1725a3a3d2a585738) | out of calls | | |
+| 9 | [4B 625](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=ffdd3068b44529f08793731f86b1570c) | answered `.gitignore` (in the real fix, left out of my key) | | |
+| 10 | [4B 1224](https://app.traceroot.ai/projects/b6e5274d-3b98-42ee-bf82-6190ed6fab8e/traces?traceId=7163843b08b7b644ad1595ba01bf4937) | wrong answer | | |
+
+While reading, note for TraceRoot:
+- [ ] Does the trace list show any of these as failed?
+- [ ] How many clicks to see why a run failed?
+- [ ] Detector usage on the workspace Billing settings page (should be 33 / 100):
+
 ## Ollama, not TraceRoot
 - The default `qwen2.5:3b-instruct` cut a 7,208 token prompt to 2,050 with no error. Fixed with `num_ctx 16384`.
 - To check later: would a trace make that cut visible? Compare the input text with the prompt token count.
